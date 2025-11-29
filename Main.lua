@@ -589,7 +589,7 @@ local SettingsBox = SettingsTab:CreateGroupbox({
     Column = 1,
 }, "SettingsBox")
 
-
+Starlight.WindowKeybind = ArchondAimbotSettings.MinizeKey
 local Input = SettingsBox:CreateInput({
     Name = "Minimize Key",
     CurrentValue = ArchondAimbotSettings.MinizeKey,
