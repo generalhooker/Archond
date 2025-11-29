@@ -14,7 +14,8 @@ local ArchondAimbotSettings = {
     FOVEnabled = true,
     FOV = 50,
     TargetPart = "Head",
-    FOVColor = Color3.fromRGB(255,255,255)
+    FOVColor = Color3.fromRGB(255,255,255),
+    MinizeKey = "H",
 }
 
 getgenv().ArchondAimbotSettings = ArchondAimbotSettings
@@ -565,14 +566,36 @@ local Toggle = EspBox:CreateToggle({
     end,
 }, "Distance")
 
-local AdditionalTab = Archond:CreateTab({
-    Name = "ESP",
-    Icon = NebulaIcons:GetIcon('square', "Lucide"),
-    Columns = 1,
-}, "Esp")
+local Toggle = EspBox:CreateToggle({
+    Name = "Show Name",
+    CurrentValue = EspSettings.ShowName,
+    CheckboxIcon = NebulaIcons:GetIcon("check", "Material"),
+    Style = 1,
+    Callback = function(Value)
+        EspSettings.ShowName = Value
+    end,
+}, "Name")
 
-local EspBox = EspTab:CreateGroupbox({
-    Name = "Archond ESP",
+
+local SettingsTab = Archond:CreateTab({
+    Name = "Settings",
+    Icon = NebulaIcons:GetIcon('settings', "Lucide"),
+    Columns = 1,
+}, "Settings")
+
+local SettingsBox = SettingsTab:CreateGroupbox({
+    Name = "Archond Settings",
     Icon = 135184037692682,
     Column = 1,
-}, "EspBox")
+}, "SettingsBox")
+
+
+local Input = SettingsBox:CreateInput({
+    Name = "Minimize Key",
+    CurrentValue = ArchondAimbotSettings.MinizeKey,
+    PlaceholderText = "Key",
+    Enter = true,
+    Callback = function(Text)
+        Starlight.WindowKeybind = Text
+    end,
+}, "MinizeKey")
