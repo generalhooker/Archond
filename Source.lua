@@ -1,8 +1,3 @@
--- init
-if not game:IsLoaded() then
-    game.Loaded:Wait()
-end
-
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Workspace = game:GetService("Workspace")
@@ -19,8 +14,7 @@ local ArchondAimbotSettings = {
     FOVEnabled = true,
     FOV = 50,
     TargetPart = "Head",
-    FOVColor = Color3.fromRGB(255,255,255),
-    MinizeKey = "H",
+    FOVColor = Color3.fromRGB(255,255,255)
 }
 
 getgenv().ArchondAimbotSettings = ArchondAimbotSettings
@@ -36,8 +30,6 @@ Circle.Visible = ArchondAimbotSettings.FOVEnabled
 local rayParams = RaycastParams.new()
 rayParams.FilterType = Enum.RaycastFilterType.Blacklist
 
-local lastColor = Color3.new(1, 1, 1) -- qualquer cor inicial
-
 RunService.RenderStepped:Connect(function()
     Circle.Position = UserInputService:GetMouseLocation()
     Circle.Radius = ArchondAimbotSettings.FOV
@@ -47,52 +39,66 @@ RunService.RenderStepped:Connect(function()
         local t = (tick() % 3) / 3  
 
         local UIColorSequence = {
-            Color3.fromRGB(255, 255, 255),
-            Color3.fromRGB(0, 0, 0),
-            Color3.fromRGB(255, 0, 0),
-            Color3.fromRGB(0, 255, 0),
-            Color3.fromRGB(0, 0, 255),
-            Color3.fromRGB(255, 255, 0),
-            Color3.fromRGB(0, 255, 255),
-            Color3.fromRGB(255, 0, 255),
-            Color3.fromRGB(128, 128, 128),
-            Color3.fromRGB(200, 200, 200),
-            Color3.fromRGB(64, 64, 64),
-            Color3.fromRGB(255, 165, 0),
-            Color3.fromRGB(255, 105, 180),
-            Color3.fromRGB(128, 0, 128),
-            Color3.fromRGB(139, 69, 19),
-            Color3.fromRGB(0, 255, 127),
-            Color3.fromRGB(0, 0, 128),
-            Color3.fromRGB(0, 128, 128),
-            Color3.fromRGB(255, 215, 0),
-            Color3.fromRGB(192, 192, 192),
-            Color3.fromRGB(128, 0, 0),
-            Color3.fromRGB(128, 128, 0),
-            Color3.fromRGB(75, 0, 130),
-            Color3.fromRGB(238, 130, 238),
-            Color3.fromRGB(135, 206, 235),
-            Color3.fromRGB(152, 255, 152)
-        }
+        Color3.fromRGB(250, 30, 78),
+        Color3.fromRGB(216, 27, 62),
+        Color3.fromRGB(175, 21, 54),
+        Color3.fromRGB(150, 18, 45),
+        
+        Color3.fromRGB(216, 27, 62),
+        Color3.fromRGB(250, 30, 78),
+        Color3.fromRGB(175, 21, 54),
+        Color3.fromRGB(150, 18, 45),
+        
+        Color3.fromRGB(250, 30, 78),
+        Color3.fromRGB(216, 27, 62),
+        Color3.fromRGB(175, 21, 54),
+        Color3.fromRGB(150, 18, 45),
+        
+        Color3.fromRGB(216, 27, 62),
+        Color3.fromRGB(250, 30, 78),
+        Color3.fromRGB(175, 21, 54),
+        Color3.fromRGB(150, 18, 45),
+        Color3.fromRGB(0, 0, 0),
+        
+        Color3.fromRGB(250, 30, 78),
+        Color3.fromRGB(216, 27, 62),
+        Color3.fromRGB(175, 21, 54),
+        Color3.fromRGB(150, 18, 45),
+        
+        Color3.fromRGB(216, 27, 62),
+        Color3.fromRGB(250, 30, 78),
+        Color3.fromRGB(175, 21, 54),
+        Color3.fromRGB(150, 18, 45),
+        
+        Color3.fromRGB(250, 30, 78),
+        Color3.fromRGB(216, 27, 62),
+        Color3.fromRGB(175, 21, 54),
+        Color3.fromRGB(150, 18, 45),
+        
+        Color3.fromRGB(216, 27, 62),
+        Color3.fromRGB(250, 30, 78),
+        Color3.fromRGB(175, 21, 54),
+        Color3.fromRGB(150, 18, 45),
+    }
 
         local total = #UIColorSequence
         local index = math.floor(t * (total - 1)) + 1
         local nextIndex = index + 1
-        if nextIndex > total then nextIndex = 1 end
+        if nextIndex > total then
+            nextIndex = 1
+        end
 
         local ratio = (t * (total - 1)) % 1
         local c1 = UIColorSequence[index]
         local c2 = UIColorSequence[nextIndex]
-        local targetColor = Color3.new(
+
+        Circle.Color = Color3.new(
             c1.R + (c2.R - c1.R) * ratio,
             c1.G + (c2.G - c1.G) * ratio,
             c1.B + (c2.B - c1.B) * ratio
         )
-
-        local smoothSpeed = 0.15
-        lastColor = lastColor:Lerp(targetColor, smoothSpeed)
-        Circle.Color = lastColor
     else
+       
         Circle.Color = ArchondAimbotSettings.FOVColor
     end
 end)
@@ -113,26 +119,6 @@ local function WallCheck(targetPart)
     return result.Instance:IsDescendantOf(targetPart.Parent)
 end
 
--- guardar última parte usada para suavizar mudança
-local lastRandomPart = nil
-local smoothPartPos = nil
-
-local function getRandomPart(character)
-    local validParts = {"Head", "HumanoidRootPart", "Left Arm", "Right Arm"}
-    local available = {}
-
-    for _, v in ipairs(validParts) do
-        if character:FindFirstChild(v) then
-            table.insert(available, character[v])
-        end
-    end
-
-    if #available == 0 then return nil end
-
-    -- escolhe aleatório
-    return available[math.random(1, #available)]
-end
-
 local function GetClosestPlayer()
     local closest = nil
     local shortest = ArchondAimbotSettings.FOV
@@ -141,24 +127,11 @@ local function GetClosestPlayer()
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= LocalPlayer and p.Character then
             local hum = p.Character:FindFirstChild("Humanoid")
-            
-            local part
-            if ArchondAimbotSettings.TargetPart == "Random" then
-                local validParts = {"Head", "HumanoidRootPart", "Left Arm", "Right Arm"}
-                for _, v in ipairs(validParts) do
-                    if p.Character:FindFirstChild(v) then
-                        part = p.Character[v]
-                        break
-                    end
-                end
-            else
-                part = p.Character:FindFirstChild(ArchondAimbotSettings.TargetPart)
-            end
-            
+            local part = p.Character:FindFirstChild(ArchondAimbotSettings.TargetPart)
+
             if part and hum then
-                if p.Character:FindFirstChildOfClass("ForceField") then continue end
                 if not ArchondAimbotSettings.DeathCheck or hum.Health > 0 then
-                    if not ArchondAimbotSettings.TeamCheck or (p.Team ~= nil and LocalPlayer.Team ~= nil and p.Team ~= LocalPlayer.Team) then
+                    if not ArchondAimbotSettings.TeamCheck or (LocalPlayer.Team == nil or p.Team ~= LocalPlayer.Team) then
                         local screenPos, visible = Camera:WorldToViewportPoint(part.Position)
 
                         if visible then
@@ -385,7 +358,7 @@ getgenv().SecureMode = true
 
 local Window = Starlight:CreateWindow({
     Name = "Archond",
-    Subtitle = "By General Hook",
+    Subtitle = "By General Hook & Noisy",
     Icon = 135184037692682,
     DefaultSize = UDim2.new(0,520,0,460),
     LoadingEnabled = true,
@@ -399,7 +372,7 @@ local Window = Starlight:CreateWindow({
     },
 
     FileSettings = {
-        ConfigFolder = "Settings",
+        ConfigFolder = "Archond",
         ThemesInRoot = false
     },
 })
@@ -484,25 +457,6 @@ local Toggle = AimingBox:CreateToggle({
     end,
 }, "WallCheck")
 
-local PartLabel = AimingBox:CreateLabel({
-    Name = "Aim Part"
-}, "AimPartLabel")
-
-local Dropdown = PartLabel:AddDropdown({
-    Options = {"Head", "HumanoidRootPart", "Random"},
-    CurrentOptions = {ArchondAimbotSettings.TargetPart},
-    MultipleOptions = false,
-    Required = true,
-    Callback = function(Option)
-        if typeof(Option) == "table" then
-            Option = Option[1]
-        end
-
-        ArchondAimbotSettings.TargetPart = tostring(Option)
-        print(tostring(Option))
-    end
-}, "RandomPart")
-
 local Divider = AimingBox:CreateDivider()
 
 local ShowFOVToggle = AimingBox:CreateToggle({
@@ -526,7 +480,7 @@ local ColorPicker = ShowFOVToggle:AddColorPicker({
 ArchondAimbotSettings.UIColorFOV = false
 
 local UIColorFOVToggle = AimingBox:CreateToggle({
-    Name = "Rainbow FOV",
+    Name = "Sequential UI FOV",
     CurrentValue = ArchondAimbotSettings.UIColorFOV,
     Style = 1,
     CheckboxIcon = NebulaIcons:GetIcon("check", "Material"),
@@ -537,6 +491,7 @@ local UIColorFOVToggle = AimingBox:CreateToggle({
         end
     end,
 }, "UIColorFOV")
+
 
 local Slider = AimingBox:CreateSlider({
     Name = "FOV Radius",
@@ -599,6 +554,7 @@ local Toggle = EspBox:CreateToggle({
     end,
 }, "Name")
 
+
 local Toggle = EspBox:CreateToggle({
     Name = "Show Distance",
     CurrentValue = EspSettings.ShowDistance,
@@ -608,21 +564,4 @@ local Toggle = EspBox:CreateToggle({
         EspSettings.ShowDistance = Value
     end,
 }, "Distance")
-
-local SettingsTab = Archond:CreateTab({
-    Name = "Settings",
-    Icon = NebulaIcons:GetIcon('settings', "Lucide"),
-    Columns = 1,
-}, "Settings")
-
-local SettingsBox = SettingsTab:CreateGroupbox({
-    Name = "Archond Settings",
-    Icon = 135184037692682,
-    Column = 1,
-}, "SettingsBox")
-
-Starlight.WindowKeybind = ArchondAimbotSettings.MinizeKey
-
-SettingsTab:BuildConfigGroupbox(1)
-SettingsTab:BuildThemeGroupbox(1)
 
