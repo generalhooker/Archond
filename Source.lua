@@ -622,15 +622,6 @@ local SettingsBox = SettingsTab:CreateGroupbox({
 }, "SettingsBox")
 
 Starlight.WindowKeybind = ArchondAimbotSettings.MinizeKey
-local Input = SettingsBox:CreateInput({
-    Name = "Minimize Key",
-    CurrentValue = ArchondAimbotSettings.MinizeKey,
-    PlaceholderText = "Key",
-    Enter = true,
-    Callback = function(Text)
-        Starlight.WindowKeybind = Text
-    end,
-}, "MinizeKey")
 
 SettingsTab:BuildConfigGroupbox(1)
 SettingsTab:BuildThemeGroupbox(1)
